@@ -1,0 +1,56 @@
+<app-alert [error]="mostrarError"></app-alert>
+
+<div class="container pt-4">
+  <div class="row">
+    <div class="col-lg-4 animate__animated animate__fadeIn">
+      <img
+        [src]="urlImg"
+        alt="weather"
+        loading="lazy"
+        style="max-width: 300px"
+      />
+    </div>
+    <div class="col-lg-6 animate__animated animate__fadeIn">
+      <input
+        type="text"
+        class="form-control form-control-lg"
+        placeholder="Ingrese Ciudad"
+        [(ngModel)]="ciudad"
+      />
+      <button
+        class="btn btn-primary btn-lg btn-block mt-4"
+        [disabled]="ciudad?.length <= 0 || ciudad == ''"
+        (click)="obtenerClima()"
+      >
+        Buscar
+      </button>
+
+      <ng-container *ngIf="query; else spinner">
+        <ng-container *ngIf="climaCiudad && !mostrarError">
+          <div class="card mt-4 animate__animated animate__fadeIn">
+            <div class="card-body">
+              <p>
+                <b>Ciudad:</b> <i> {{ climaCiudad.name }}</i>
+              </p>
+              <p><b>Temperatura:</b> {{ climaCiudad.main?.temp }}°</p>
+              <p>
+                <b>Temperatura Máxima:</b> {{ climaCiudad.main?.temp_max }}°
+              </p>
+              <p>
+                <b>Temperatura Mínima:</b> {{ climaCiudad.main?.temp_min }}°
+              </p>
+              <p><b>Humedad:</b> {{ climaCiudad.main?.humidity }}%</p>
+              <p><b>Clima:</b> {{ climaCiudad.weather[0]?.description }}</p>
+              <p><b>Visibilidad:</b> {{ climaCiudad.visibility }}</p>
+              <p><b>Viento:</b> {{ climaCiudad.wind?.speed }}km/h</p>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<ng-template #spinner>
+  <app-spinner [loading]="loading"></app-spinner>
+</ng-template>
